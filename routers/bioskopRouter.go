@@ -19,5 +19,11 @@ func SetupBioskopRoutes(router *gin.Engine, db *sql.DB) {
 		bioskopGroup.GET("/:ID", func(c *gin.Context) {
 			controllers.GetBioskopByID(c, db)
 		})
+		bioskopGroup.PUT("/:ID", func(c *gin.Context) {
+			controllers.UpdateBioskop(c, db)
+		})
+		bioskopGroup.DELETE("/:ID", func(c *gin.Context) {
+			controllers.DeleteBioskop(c, db)
+		})
 	}
 }

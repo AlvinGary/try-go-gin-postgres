@@ -2,19 +2,14 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 	"try-go-gin-postgres/routers"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
-)
-
-const (
-	DB_USER     = "postgres"
-	DB_PASSWORD = "root"
-	DB_NAME     = "try-postgres"
-	DB_HOST     = "localhost"
-	DB_PORT     = "5432"
 )
 
 var (
@@ -23,7 +18,17 @@ var (
 )
 
 func main() {
-	dbInfo := "host=" + DB_HOST + " port=" + DB_PORT + " user=" + DB_USER + " password=" + DB_PASSWORD + " dbname=" + DB_NAME + " sslmode=disable"
+	err = godotenv.Load("config/.env")
+    if err != nil {
+        panic("Error loading .env file")
+    }
+	dbInfo := fmt.Sprintf(`host=%s port=%s user=%s password=%s dbname=%s sslmode=disable`,
+        os.Getenv("DB_HOST"),
+        os.Getenv("DB_PORT"),
+        os.Getenv("DB_USER"),
+        os.Getenv("DB_PASSWORD"),
+        os.Getenv("DB_NAME"),
+    )
 	db, err = sql.Open("postgres", dbInfo)
 	if err != nil {
 		log.Fatal("Error connecting to the database:", err)
