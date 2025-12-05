@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"try-go-gin-postgres/database"
 	"try-go-gin-postgres/routers"
 
 	"github.com/gin-gonic/gin"
@@ -39,6 +40,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Cannot reach the database:", err)
 	}
+
+	database.DBMigrate(db)
 	router := gin.Default()
 	routers.SetupBioskopRoutes(router, db)
 	log.Println("Server is running on port 8000")
