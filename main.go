@@ -44,6 +44,12 @@ func main() {
 	database.DBMigrate(db)
 	router := gin.Default()
 	routers.SetupBioskopRoutes(router, db)
-	log.Println("Server is running on port 8000")
-	router.Run(":8000")
+
+	port := os.Getenv("PORT")
+    if port == "" {
+        port = "8000" // local
+    }
+
+    log.Println("Server is running on port:", port)
+    router.Run(":" + port)
 }
